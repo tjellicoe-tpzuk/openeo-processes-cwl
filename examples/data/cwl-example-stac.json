@@ -4,7 +4,7 @@
       "process_id": "load_stac",
       "description": "Loading the data from a STAC file",
       "arguments": {
-        "url": "https://raw.githubusercontent.com/tjellicoe-tpzuk/openEO_read-write/main/data/cropped_output/S2A_38VNM_20221124_0_L2A.json",
+        "url": "https://raw.githubusercontent.com/tjellicoe-tpzuk/openEO_read-write/main/data/S2MSI2A.json",
         "spatial_extent": {
           "west": "11.25",
           "south": "46.46",
