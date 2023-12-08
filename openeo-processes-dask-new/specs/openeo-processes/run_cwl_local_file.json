@@ -1,0 +1,87 @@
+{
+  "id": "run_cwl_url",
+  "summary": "Run a cwl on a file given by a URL ",
+  "description": "Runs a given CWL script on a file accessible via an input URL location, as well as allowing \n\nadditional context data to be provided as required by the CWL definition.",
+  "categories": ["cubes", "import", "cwl", "local"],
+  "parameters": [
+    {
+      "description": "Either source code, an absolute URL or a path pointing to a cwl script to be applied to the input data. \n\nThis CWL script needs to comply with the OGC Best Practice definition and needs to contain exactly one input with id 'input_data'.",
+      "name": "url_cwl_url",
+      "schema": [
+        {
+          "description": "Absolute URL to the CWL file.",
+          "type": "string",
+          "format": "uri",
+          "subtype": "uri",
+          "pattern": "^https?://"
+        },
+        {
+          "description": "Path to a CWL file uploaded to the server.",
+          "type": "string",
+          "subtype": "file-path",
+          "pattern": "^[^\r\n\\:'\"]+$"
+        },
+        {
+          "description": "The multi-line source code of a CWL file, must contain a newline/line-break.",
+          "type": "string",
+          "subtype": "cwl-code",
+          "pattern": "(\r\n|\r|\n)"
+        }
+      ]
+    },
+    {
+      "name": "cwl_inputs",
+      "default": {},
+      "description": "A dictionary of additional parameter inputs to be passed into the cwl file when run. \n\nThis can be provided either as a yml text string, as a URL or a path pointing to a yml file. Note, the inputs here must align with those names in the inputted CWL file.",
+      "optional": true,
+      "schema": [
+        {
+          "description": "A yml text string of inputs",
+          "type": "string",
+          "format": "yml-inputs",
+          "subtype": "yml-inputs",
+          "pattern": "(.+:.*(\r\n|\n|\r)*)+"
+        },
+        {
+          "description": "Absolute URL to a yml input file.",
+          "type": "string",
+          "format": "uri",
+          "subtype": "uri",
+          "pattern": "^https?://"
+        },
+        {
+          "description": "Path to a yml input file uploaded to the server.",
+          "type": "string",
+          "subtype": "file-path",
+          "pattern": "^[^\r\n\\:'\"]+$"
+        }
+      ]
+    },
+    {
+      "description": "The data to input to the cwl script, provided as a local file location to a file uploaded to the server. \n\nThis data will be passed to the cwl as the 'input_data' input and so the file type must match that defined in the cwl script here.",
+      "name": "data",
+      "schema": {
+        "description": "Path to the data file uploaded to the server.",
+        "subtype": "file-path",
+        "title": "Data location (file path)",
+        "pattern": "^[^\r\n\\:'\"]+$",
+        "type": "string"
+      }
+    }
+  ],
+  "exceptions": {
+    "InvalidXX": {
+      "message": "Insert example exception message here. E.g. 'The specified UDF runtime version is not supported'"
+    },
+    "InvalidYY": {
+      "message": "Insert example exception message here. E.g. 'The specified UDF runtime version is not supported'"
+    }
+  },
+  "returns": {
+    "description": "The data processed by the CWl tool. The returned value can be of any data type and is exactly what the CWL tool returns. \n\nOften this will be a URL location of the output data given by a string.",
+    "schema": {
+      "title": "Any",
+      "description": "Any data type."
+    }
+  }
+}
