@@ -4,7 +4,7 @@ two new processes, one to convert data into a suitable format for cwl and anothe
 the spec file path. If these are deemed suitable, they can then form part of the openEO specification in future to ensure any additional implementations can also choose to support the running of CWL scripts.
 
 ## How to Use this Repository
-There are two ways to test this repository, the first is to run the `demo_locabuild` Jupyter Notebook provided under `/examples/`, make sure to run this notebook in a virtual environment with the requirements.txt file installed before. 
+There are two ways to test this repository, the first is to run the `demo_locabuild_cwl` Jupyter Notebook provided under `/examples/`, make sure to run this notebook in a virtual environment with the requirements.txt file installed before. 
 The second method is to run the `parse_graph.py` script which executes the process graph as a single script and saves the generated outputs locally. Currently, both of these scripts load and run the `cwl-example.json` process graph 
 defined under `examples/data`. However, new process graphs can be defined and updated in the scripts to test other processes as well. You can also specify a number of inputs within these json files including the CWL script location 
 as well as the domain if the CWL is to be executed via another application.
