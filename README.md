@@ -1,4 +1,4 @@
-### openEO Processes Dask Update to Support CWL
+# openEO Processes Dask Update to Support CWL
 This repository defines an openEO implementation directly branched from the [openeo-processes-dask](https://github.com/Open-EO/openeo-processes-dask) repository. This previous implementation has been augmented with the introduction of 
 two new processes, one to convert data into a suitable format for cwl and another to execute a given cwl script on this generated data file. In order to support these processes, new process definitions and subtypes have been defined in 
 the spec file path. If these are deemed suitable, they can then form part of the openEO specification in future to ensure any additional implementations can also choose to support the running of CWL scripts.
