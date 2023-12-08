@@ -1,6 +1,6 @@
 from openeo_pg_parser_networkx import OpenEOProcessGraph
 
-EVI_GRAPH_PATH = "./openeo-pg-parser-networkx/examples/data/pg-evi-example.json"
+EVI_GRAPH_PATH = "./examples/data/pg-evi-example.json"
 
 parsed_graph = OpenEOProcessGraph.from_file(EVI_GRAPH_PATH)
 
