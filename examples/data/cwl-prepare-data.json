@@ -161,29 +161,15 @@
           "from_node": "mintime"
         },
         "save_location": "url",
-        "git_token": "INSERT TOKEN HERE",
+        "git_token": "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",
         "git_repository": "tjellicoe-tpzuk/openEO_read-write"
-      }
-    },
-    "execute_cwl": {
-      "process_id": "run_cwl_url",
-      "arguments": {
-        "cwl_url": "https://raw.githubusercontent.com/tjellicoe-tpzuk/ades_python_convert/main/netcdf_integration/convert-nc-app.cwl",
-        "data": {
-          "from_node": "cwl_preparation"
-        },
-        "domain": "192-168-49-2.nip.io",
-        "cwl_inputs": {
-          "fn": "scale",
-          "size": "0.1"
-        }
       }
     },
     "save": {
       "process_id": "save_result",
       "arguments": {
         "data": {
-          "from_node": "execute_cwl"
+          "from_node": "cwl_preparation"
         },
         "format": "_"
       },

@@ -4,7 +4,8 @@
       "process_id": "load_stac",
       "description": "Loading the data from a STAC file",
       "arguments": {
-        "url": "https://raw.githubusercontent.com/tjellicoe-tpzuk/openEO_read-write/main/data/S2MSI2A.json",
+        "url": "https://earth-search.aws.element84.com/v1/collections/sentinel-2-l2a",
+        "url_temp": "https://earth-search.aws.element84.com/v1/collections/sentinel-2-l2a",
         "spatial_extent": {
           "west": "11.25",
           "south": "46.46",

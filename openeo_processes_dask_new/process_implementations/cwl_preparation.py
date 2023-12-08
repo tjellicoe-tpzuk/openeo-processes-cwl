@@ -4,6 +4,7 @@ import rioxarray
 from datetime import datetime as dt
 import time
 import os
+import requests
 
 #####
 # This script is an example of how the data could be prepared before being handed as an input to the the run_cwl_url process.
@@ -24,11 +25,12 @@ def _create_file_url(data: xr.DataArray, git_repository: str, git_token: str):
     timeNow = str(time.time())[-6:]
     fileName = f"openEO_output_{timeNow}"
     try:
-        repo.create_file(f'data/{fileName}.nc', 'upload tif', outfile, branch='main')
+        repo.create_file(f'data/{fileName}.nc', 'upload netcdf', outfile, branch='main')
     except:
         print("Something went wrong when saving the file :(")
     #print(repo)
-    url = "https://raw.githubusercontent.com/tjellicoe-tpzuk/openEO_read-write/main/data/" + fileName + ".nc"
+    url = f"https://raw.githubusercontent.com/{git_repository}/main/data/{fileName}.nc"
+    
     return url
 
 def _create_file_local(data: xr.DataArray):

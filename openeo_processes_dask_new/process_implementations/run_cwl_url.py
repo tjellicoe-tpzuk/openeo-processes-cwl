@@ -2,8 +2,10 @@ import os
 import requests
 import json
 import time
-
+import boto3
 import urllib3
+import xarray as xr
+
 urllib3.disable_warnings() ## temporary fix only!
 
 #####
@@ -82,10 +84,8 @@ def getDeployStatus(deployStatus, ades):
 
     print(json.dumps(rawAnswer.json(), indent=4))
 
-def executeProcess(ades, cwlScriptName, inputDataLocation, inputSExpression):
+def executeProcess(ades, cwlScriptName, inputDataLocation, kwargs):
     ### Get Execute Status
-
-    
 
     apiQuestion = base + ades + "/" + user + "/wps3/processes/" + cwlScriptName + "/execution"
 
@@ -96,10 +96,15 @@ def executeProcess(ades, cwlScriptName, inputDataLocation, inputSExpression):
     apiParams = {
         "inputs": {
             "input_reference": inputDataLocation,
-            "s_expression": inputSExpression
         },
         'response': 'raw'
     }
+
+    inputs = {f"{key}": f"{value}" for key,value in kwargs.items()}
+    print (kwargs)
+    apiParams['inputs'].update(kwargs)
+
+    print(apiParams)
 
     rawAnswer = requests.post(apiQuestion, headers=apiHeader, verify=False, json=apiParams) #verify False due to issue here: https://support.chainstack.com/hc/en-us/articles/9117198436249-Common-SSL-Issues-on-Python-and-How-to-Fix-it
 
@@ -130,11 +135,11 @@ def getProcessingResults(executeStatus, ades):
 
     return rawAnswer
 
-def run_cwl_url(domain: str, cwl_url: str, data: str, cwl_inputs: str):
+def run_cwl_url(domain: str, cwl_url: str, data: str, cwl_inputs):
     ades = f"ades-open.{domain}"
     login = f"auth.{domain}"
 
-    #listProcesses(ades)
+    ## need to takent eh cwl_inputs parameter as a dictionary with multiple named inputs
 
     deployProcessRtrn = deployProcess(ades, cwl_url)
     deployStatus = deployProcessRtrn.headers['Location']
@@ -156,13 +161,40 @@ def run_cwl_url(domain: str, cwl_url: str, data: str, cwl_inputs: str):
     if status == "successful":
         ## Return location of minio data catalogue
         out_location = getProcessingResults(executeStatus, ades).json()['StacCatalogUri'] ## = "s3://eoepca/wf-9e9adfb8-9364-11ee-b004-0242ac110006/catalog.json"
-        return out_location
+        out_cube = s3_download(out_location)
+        return out_cube
 
     if status == "failed":
         message = getExecuteStatus(executeStatus, ades).json()['message']
         print("Exception raised, message is " + message)
         return False
 
+
+def s3_download(url):
+    urllib3.disable_warnings() ## temporary fix only!
+
+    result_folder_name = url.rsplit("/",1)[0].rsplit("/",1)[1]
+    bucket_name = url.rsplit("/",1)[0].rsplit("/",1)[0].replace("s3://", "")
+
+    # Init S3 session for Creodias
+    S3_ENDPOINT = f"https://minio.192-168-49-2.nip.io"
+    session = boto3.session.Session()
+    s3resource = session.resource('s3', aws_access_key_id="eoepca", aws_secret_access_key="changeme", endpoint_url=S3_ENDPOINT, verify=False)
+
+    # s3_response_object = s3resource.Object(bucket_name, "catalog.json")
+    # print(s3_response_object.get())
+    #object_content = s3_response_object['Body'].read()
+
+    # List bucket contents
+    bucket = s3resource.Bucket(bucket_name)
+
+    for obj in bucket.objects.filter(Prefix=result_folder_name):
+        file_name = obj.key.rsplit("/", 1)[1]
+        bucket.download_file(obj.key, file_name)
+        if file_name.rsplit(".", 1)[1] == "nc":
+            dArray = xr.load_dataarray(file_name)
+            return dArray
+    return url
 
 
 # if __name__ == "__main__":

@@ -4,6 +4,7 @@ geopandas
 joblib
 numpy
 openeo_pg_parser_networkx
+openeo_pg_parser_networkx[plot]
 pandas
 planetary_computer
 pyproj
@@ -22,3 +23,4 @@ odc-stac
 github
 PyGithub
 boto3
+ipykernel
