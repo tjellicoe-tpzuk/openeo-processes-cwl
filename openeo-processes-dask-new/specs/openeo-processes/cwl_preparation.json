@@ -1,0 +1,76 @@
+{
+  "id": "cwl_preparation",
+  "summary": "Convert input data to a file location that can be used as an input to a run_cwl_url process",
+  "description": "This process takes input data, often a raster data cube but any data type can be supported, \n\nsaves it to a remote server location as a file and returns the location of this file for future recall.",
+  "categories": ["cubes", "import", "cwl", "url"],
+  "parameters": [
+    {
+      "name": "data",
+      "description": "The data to be passed to the preparation process.",
+      "schema": [
+        {
+          "description": "A raster data cube, an image collection stored at the back-end. Different back-ends have different internal representations for this data structure.",
+          "subtype": "raster-cube",
+          "title": "Raster data cube",
+          "type": "object"
+        },
+        {
+          "title": "Array",
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "description": "Any data type."
+          }
+        },
+        {
+          "title": "Single Value",
+          "description": "A single value of any data type."
+        }
+      ]
+    },
+    {
+      "name": "save_location",
+      "description": "Parameter to define whether the prepared file should be saved locally on the server or uploaded to a remote server location.",
+      "schema": {
+        "type": "string",
+        "format": "local_or_url",
+        "subtype": "local_or_url",
+        "pattern": "^(local|url)$"
+      }
+    },
+    {
+      "name": "git_token",
+      "description": "Git-generated token to be used with Git API to gain access to specified repository and allow file upload.",
+      "schema": {
+        "type": "string"
+      },
+      "optional": true
+    },
+    {
+      "name": "git_repository",
+      "description": "Location of Git repository to upload data to in the format '<user-name>/<repo-name>'. A new directory will be created in this repository called 'data'.",
+      "schema": {
+        "type": "string",
+        "subtype": "uri",
+        "format": "uri"
+      },
+      "optional": true
+    }
+  ],
+  "exceptions": {
+    "InvalidSaveType": {
+      "message": "The specified save location is not supported."
+    },
+    "InsufficientArguments": {
+      "message": "To save in requested location need to provide additional arguments, e.g. Token and location of Git repository"
+    }
+  },
+  "returns": {
+    "description": "The location of the generated file, either as a url or local file path.",
+    "schema": {
+      "title": "Location of file",
+      "type": "string",
+      "description": "Location of the output file, given as a string."
+    }
+  }
+}
