@@ -65,7 +65,7 @@ def deployProcess(ades, cwlLocation):
 
     rawAnswer = requests.post(apiQuestion, headers=apiHeader, verify=False, json=apiParams) #verify False due to issue here: https://support.chainstack.com/hc/en-us/articles/9117198436249-Common-SSL-Issues-on-Python-and-How-to-Fix-it
 
-    print(rawAnswer.headers)
+    #print(rawAnswer.headers)
 
     return rawAnswer
 
@@ -100,11 +100,13 @@ def executeProcess(ades, cwlScriptName, inputDataLocation, kwargs):
         'response': 'raw'
     }
 
-    inputs = {f"{key}": f"{value}" for key,value in kwargs.items()}
-    print (kwargs)
+    #inputs = {f"{key}": f"{value}" for key,value in kwargs.items()}
+    
+    #print (kwargs)
+    
     apiParams['inputs'].update(kwargs)
 
-    print(apiParams)
+    #print(apiParams)
 
     rawAnswer = requests.post(apiQuestion, headers=apiHeader, verify=False, json=apiParams) #verify False due to issue here: https://support.chainstack.com/hc/en-us/articles/9117198436249-Common-SSL-Issues-on-Python-and-How-to-Fix-it
 
@@ -142,7 +144,8 @@ def run_cwl_url(domain: str, cwl_url: str, data: str, cwl_inputs):
     ## need to takent eh cwl_inputs parameter as a dictionary with multiple named inputs
 
     deployProcessRtrn = deployProcess(ades, cwl_url)
-    deployStatus = deployProcessRtrn.headers['Location']
+    #print(deployProcessRtrn)
+    #deployStatus = deployProcessRtrn.headers['Location']
 
     cwlScriptName = deployProcessRtrn.json()['id']
 
@@ -153,9 +156,9 @@ def run_cwl_url(domain: str, cwl_url: str, data: str, cwl_inputs):
     status = getExecuteStatus(executeStatus, ades).json()['status']
     print(f"Initial status is {bcolors.OKGREEN + status.upper() + bcolors.ENDC} please wait for processing to finish")
     while status == "running":
-        #time.sleep(10)can I bold
+        time.sleep(10)
         status = getExecuteStatus(executeStatus, ades).json()['status']
-        #print(status)
+        print("Status is still running on ADES")
         #print(getExecuteStatus(executeStatus, ades).json())
 
     if status == "successful":
@@ -164,19 +167,24 @@ def run_cwl_url(domain: str, cwl_url: str, data: str, cwl_inputs):
         out_cube = s3_download(out_location)
         return out_cube
 
-    if status == "failed":
+    elif status == "failed":
         message = getExecuteStatus(executeStatus, ades).json()['message']
         print("Exception raised, message is " + message)
         return False
+    
+    else:
+        print("Unknown status returned")
 
 
 def s3_download(url):
     urllib3.disable_warnings() ## temporary fix only!
 
+    print("Downloading S3 data output")
+
     result_folder_name = url.rsplit("/",1)[0].rsplit("/",1)[1]
     bucket_name = url.rsplit("/",1)[0].rsplit("/",1)[0].replace("s3://", "")
 
-    # Init S3 session for Creodias
+    # Init S3 session for data access
     S3_ENDPOINT = f"https://minio.192-168-49-2.nip.io"
     session = boto3.session.Session()
     s3resource = session.resource('s3', aws_access_key_id="eoepca", aws_secret_access_key="changeme", endpoint_url=S3_ENDPOINT, verify=False)
@@ -188,11 +196,13 @@ def s3_download(url):
     # List bucket contents
     bucket = s3resource.Bucket(bucket_name)
 
+    # Find netcdf file in output directory and convert back to datacube for further processing
     for obj in bucket.objects.filter(Prefix=result_folder_name):
         file_name = obj.key.rsplit("/", 1)[1]
         bucket.download_file(obj.key, file_name)
         if file_name.rsplit(".", 1)[1] == "nc":
             dArray = xr.load_dataarray(file_name)
+            print(dArray)
             return dArray
     return url
 
