@@ -8,7 +8,8 @@ from .cubes import *
 from .logic import *
 from .math import *
 from .cwl_preparation import *
-from .run_cwl_url import *
+from .run_cwl_ades import *
+from .run_cwl_local import *
 
 try:
     from .ml import *

@@ -9,12 +9,12 @@ import xarray as xr
 urllib3.disable_warnings() ## temporary fix only!
 
 #####
-# This script will interface directly with the API provided via the ADES running on a deployeed EOEPCA application package. 
-# It allows the entire EOEPCA  processing pipeline to be run from a single Python script, taking the input CWL and input data, and returning
-# the location of the final output as a string. Here the output file will be located in a Min.io bucket.
+# This script will interface directly with the API provided via the ADES running on a deployed EOEPCA application package. 
+# It allows the entire EOEPCA  processing pipeline to be run from a single Python script, taking the input CWL, input data and additional context dictionary.
+# The output from the ADES is then loaded back in as a local variable (here, as a data array) and returned to the openEO environment for further processing.
 #####
 
-__all__ = ["run_cwl_url"]
+__all__ = ["run_cwl_ades"]
 
 base = "https://"
 #domain = "192-168-49-2.nip.io"
@@ -137,7 +137,7 @@ def getProcessingResults(executeStatus, ades):
 
     return rawAnswer
 
-def run_cwl_url(domain: str, cwl_url: str, data: str, cwl_inputs):
+def run_cwl_ades(domain: str, cwl_url: str, data: str, cwl_inputs):
     ades = f"ades-open.{domain}"
     login = f"auth.{domain}"
 
@@ -201,7 +201,7 @@ def s3_download(url):
         file_name = obj.key.rsplit("/", 1)[1]
         bucket.download_file(obj.key, file_name)
         if file_name.rsplit(".", 1)[1] == "nc":
-            dArray = xr.load_dataarray(file_name)
+            dArray = xr.load_dataset(file_name)
             print(dArray)
             return dArray
     return url

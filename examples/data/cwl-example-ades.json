@@ -166,7 +166,7 @@
       }
     },
     "execute_cwl": {
-      "process_id": "run_cwl_url",
+      "process_id": "run_cwl_ades",
       "arguments": {
         "cwl_url": "https://raw.githubusercontent.com/tjellicoe-tpzuk/ades_python_convert/main/netcdf_integration/convert-nc-app.cwl",
         "data": {
