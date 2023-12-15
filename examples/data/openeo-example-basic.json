@@ -19,7 +19,7 @@
       "process_id": "save_result",
       "arguments": {
         "data": {
-          "from_node": "cwl_preparation"
+          "from_node": "load_collection"
         },
         "format": "_"
       },
