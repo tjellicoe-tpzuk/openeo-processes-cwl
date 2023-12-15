@@ -161,7 +161,7 @@
           "from_node": "mintime"
         },
         "save_location": "url",
-        "git_token": "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",
+        "git_token": "INSERT TOKEN HERE",
         "git_repository": "tjellicoe-tpzuk/openEO_read-write"
       }
     },
