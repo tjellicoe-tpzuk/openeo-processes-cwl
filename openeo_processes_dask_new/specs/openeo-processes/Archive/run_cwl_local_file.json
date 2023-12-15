@@ -1,7 +1,7 @@
 {
   "id": "run_cwl_url",
   "summary": "Run a cwl on a file given by a URL ",
-  "description": "Runs a given CWL script on a file accessible via an input URL location, as well as allowing \n\nadditional context data to be provided as required by the CWL definition.",
+  "description": "Runs a given CWL script on a file accessible via an input URL location, as well as allowing \n\nadditional context data to be provided as required by the CWL definition. This process will run the #main workflow within the CWL tool.\n\n Desired output for next process must be called 'results'.",
   "categories": ["cubes", "import", "cwl", "local"],
   "parameters": [
     {
