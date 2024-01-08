@@ -161,7 +161,7 @@
         "data": {
           "from_node": "mintime"
         },
-        "context": {
+        "cwl_inputs": {
           "fn": "scale",
           "size": "0.1"
         }
