@@ -35,7 +35,7 @@ def save_file(data):
 def rem_file(dataPath):
     os.remove(dataPath)
 
-def run_cwl_local(cwl_location, data, context):
+def run_cwl_local(cwl_location, data, cwl_inputs):
 
     dataLocation = save_file(data)
 
@@ -51,7 +51,7 @@ def run_cwl_local(cwl_location, data, context):
                 }
             }
 
-    inputs.update(context)
+    inputs.update(cwl_inputs)
 
     echo = fac.make(cwl_location)
     result = echo(**inputs)
