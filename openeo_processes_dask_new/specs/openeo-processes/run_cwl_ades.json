@@ -70,7 +70,7 @@
     {
       "name": "domain",
       "default": {},
-      "description": "A dictionary of additional parameter inputs to be passed into the cwl file when run. \n\nThis can be provided either as a yml text string, as a URL or a path pointing to a yml file. Note, the inputs here must align with those names in the inputted CWL file.",
+      "description": "The domain address of a running EOEPCA instance to be used when deploying the application package via the ADES.",
       "type": "string"
     }
   ],
