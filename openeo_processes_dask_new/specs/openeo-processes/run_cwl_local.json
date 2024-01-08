@@ -58,15 +58,29 @@
       ]
     },
     {
-      "description": "The data to input to the cwl script, provided as a URL. \n\nThis data will be passed to the cwl as the 'input_data' input and so the file type must match that defined in the cwl script here.",
       "name": "data",
-      "schema": {
-        "description": "Absolute URL to the data file.",
-        "subtype": "uri",
-        "title": "Data location (url)",
-        "type": "string"
-      }
-    },
+      "description": "The data to be passed to the CWL script as 'input_data' in the CWL file.",
+      "schema": [
+        {
+          "description": "A raster data cube, an image collection stored at the back-end. Different back-ends have different internal representations for this data structure.",
+          "subtype": "raster-cube",
+          "title": "Raster data cube",
+          "type": "object"
+        },
+        {
+          "title": "Array",
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "description": "Any data type."
+          }
+        },
+        {
+          "title": "Single Value",
+          "description": "A single value of any data type."
+        }
+      ]
+    }
   ],
   "exceptions": {
     "InvalidXX": {
