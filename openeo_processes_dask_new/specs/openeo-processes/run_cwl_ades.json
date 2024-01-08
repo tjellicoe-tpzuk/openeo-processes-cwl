@@ -43,14 +43,14 @@
           "pattern": "(.+:.*(\r\n|\n|\r)*)+"
         },
         {
-          "description": "Absolute URL to a yml input file.",
+          "description": "Not yet supported. Absolute URL to a yml input file.",
           "type": "string",
           "format": "uri",
           "subtype": "uri",
           "pattern": "^https?://"
         },
         {
-          "description": "Path to a yml input file uploaded to the server.",
+          "description": "Not yet supported. Path to a yml input file uploaded to the server.",
           "type": "string",
           "subtype": "file-path",
           "pattern": "^[^\r\n\\:'\"]+$"
