@@ -1,7 +1,7 @@
 {
   "id": "run_cwl_ades",
-  "summary": "Run a cwl on a file uploaded to the server.",
-  "description": "Runs a given CWL script on a file that has been uploaded to the server, as well as allowing \n\nadditional context data to be provided as required by the CWL definition.",
+  "summary": "Run a cwl via the ADES, on a file uploaded to a server.",
+  "description": "Runs a given CWL script, via the EOEPCA ADES, on a file that has been uploaded to a server, as well as allowing \n\nadditional context data to be provided as required by the CWL definition.",
   "categories": ["cubes", "import", "cwl", "url"],
   "parameters": [
     {
