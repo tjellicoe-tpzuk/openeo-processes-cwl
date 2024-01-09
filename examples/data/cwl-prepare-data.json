@@ -160,9 +160,11 @@
         "data": {
           "from_node": "mintime"
         },
-        "save_location": "url",
-        "git_token": "INSERT TOKEN HERE",
-        "git_repository": "tjellicoe-tpzuk/openEO_read-write"
+        "context": {
+          "save_location": "url",
+          "git_token": "INSERT TOKEN HERE",
+          "git_repository": "tjellicoe-tpzuk/openEO_read-write"
+        }
       }
     },
     "save": {

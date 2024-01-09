@@ -55,8 +55,13 @@ def _convert_file_format(data):
 
 ## This is a function to be used locally for testing of this function, as the runtime required to run this function is not 
 ## currently supported on openEO.
-def cwl_preparation(data: xr.DataArray, save_location: str, git_repository: str=None, git_token: str=None):
+def cwl_preparation(data: xr.DataArray, context: dict=None):
     #xarrayTest = data #.to_array()
+
+    save_location = context['save_location']
+    git_repository = context['git_repository']
+    git_token = context['git_token']
+
     if save_location == "url":
         if git_repository == None or git_token==None:
             raise Exception("InsufficientArguments", "Please provide Git access token and Git repository location to save to a URL.")

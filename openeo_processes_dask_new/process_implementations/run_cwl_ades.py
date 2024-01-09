@@ -137,7 +137,8 @@ def getProcessingResults(executeStatus, ades):
 
     return rawAnswer
 
-def run_cwl_ades(domain: str, cwl_url: str, data: str, cwl_inputs):
+def run_cwl_ades(cwl_url: str, data: str, cwl_inputs: dict, context: dict=None):
+    domain = context['domain']
     ades = f"ades-open.{domain}"
     login = f"auth.{domain}"
 
@@ -164,7 +165,7 @@ def run_cwl_ades(domain: str, cwl_url: str, data: str, cwl_inputs):
     if status == "successful":
         ## Return location of minio data catalogue
         out_location = getProcessingResults(executeStatus, ades).json()['StacCatalogUri'] ## = "s3://eoepca/wf-9e9adfb8-9364-11ee-b004-0242ac110006/catalog.json"
-        out_cube = s3_download(out_location)
+        out_cube = s3_download(out_location, domain)
         return out_cube
 
     elif status == "failed":
@@ -176,7 +177,7 @@ def run_cwl_ades(domain: str, cwl_url: str, data: str, cwl_inputs):
         print("Unknown status returned")
 
 
-def s3_download(url):
+def s3_download(url, domain):
     urllib3.disable_warnings() ## temporary fix only!
 
     print("Downloading S3 data output")
@@ -185,7 +186,7 @@ def s3_download(url):
     bucket_name = url.rsplit("/",1)[0].rsplit("/",1)[0].replace("s3://", "")
 
     # Init S3 session for data access
-    S3_ENDPOINT = f"https://minio.192-168-49-2.nip.io"
+    S3_ENDPOINT = f"https://minio.{domain}"
     session = boto3.session.Session()
     s3resource = session.resource('s3', aws_access_key_id="eoepca", aws_secret_access_key="changeme", endpoint_url=S3_ENDPOINT, verify=False)
 

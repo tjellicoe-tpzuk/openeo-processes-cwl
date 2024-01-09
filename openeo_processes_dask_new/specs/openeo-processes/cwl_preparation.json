@@ -29,31 +29,12 @@
       ]
     },
     {
-      "name": "save_location",
-      "description": "Parameter to define whether the prepared file should be saved locally on the server or uploaded to a remote server location.",
+      "name": "context",
+      "description": "A dictionary of additional inputs required within this process.",
       "schema": {
-        "type": "string",
-        "format": "local_or_url",
-        "subtype": "local_or_url",
-        "pattern": "^(local|url)$"
-      }
-    },
-    {
-      "name": "git_token",
-      "description": "Git-generated token to be used with Git API to gain access to specified repository and allow file upload.",
-      "schema": {
-        "type": "string"
+        "type": "object"
       },
-      "optional": true
-    },
-    {
-      "name": "git_repository",
-      "description": "Location of Git repository to upload data to in the format '<user-name>/<repo-name>'. A new directory will be created in this repository called 'data'.",
-      "schema": {
-        "type": "string",
-        "subtype": "uri",
-        "format": "uri"
-      },
+      "default": {},
       "optional": true
     }
   ],

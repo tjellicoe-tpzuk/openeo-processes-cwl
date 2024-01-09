@@ -35,7 +35,7 @@ def save_file(data):
 def rem_file(dataPath):
     os.remove(dataPath)
 
-def run_cwl_local(cwl_location, data, cwl_inputs):
+def run_cwl_local(cwl_location, data, cwl_inputs, context=None):
 
     dataLocation = save_file(data)
 
