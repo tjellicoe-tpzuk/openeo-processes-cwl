@@ -1,0 +1,42 @@
+{
+  "id": "udf_save_to_git",
+  "parameters": [
+    {
+      "description": "datacube to be sent to EOEPCA for further processing",
+      "name": "data",
+      "schema": {
+        "type": "array"
+      }
+    }
+  ],
+  "process_graph": {
+    "run4": {
+      "arguments": {
+        "context": {
+          "access_token": "",
+          "fileName": "test_image"
+        },
+        "data": {
+          "from_parameter": "data"
+        },
+        "runtime": "Python",
+        "udf": "from openeo.udf import XarrayDataCube\nimport xarray as xr\nfrom github import Github\nimport rioxarray\nfrom git_access import git_access_token\nfrom datetime import datetime as dt\nimport time\n\ndef apply_datacube(cube: XarrayDataCube, context: dict):\n    xarrayTest = cube.to_array()\n\tfileNameSuffix = context['fileName']\n\ttry:\n\t  access_token = context['access_token']\n\texcept:\n\t  access_token = \"please_insert_token\"\n    url = create_STAC(xarrayTest, access_token, fileNameSuffix)\n    return url\n\n\ndef create_STAC(cube: xr.DataArray, access_token: str, fileNameSuffix: str):\n    g = Github(access_token)\n    repo = g.get_repo('tjellicoe-tpzuk/openEO_read-write')\n    outfile = cube.to_netcdf()\n    #todayDate = dt.now().strftime(\"%y-%m-%d\")\n    #timeNow = time()[-6:]\n    fileName = f\"openEO_output_{fileNameSuffix}\"\n    repo.create_file(f'data/{fileName}.nc', 'upload tif', outfile, branch='main')\n    url = \"https://raw.githubusercontent.com/tjellicoe-tpzuk/openEO_read-write/main/data/\" + fileName + \".nc\"\n    \n    return url"
+      },
+      "process_id": "run_udf"
+    },
+    "run5": {
+      "arguments": {
+        "context": {
+          "url": "https://raw.githubusercontent.com/tjellicoe-tpzuk/openEO_read-write/main/data/test_image.nc"
+        },
+        "data": {
+          "from_node": "run4"
+        },
+        "runtime": "Python",
+        "udf": "import xarray as xr\nimport requests\nimport json\nfrom openeo.udf import XarrayDataCube\n\ndef read_netcdf_from_git(url: str):\n    loaded_file_raw = requests.get(url)\n    loaded_da = xr.load_dataarray(loaded_file_raw.content)\n    print(loaded_da)\n    return loaded_da\n\n#url = \"https://raw.githubusercontent.com/tjellicoe-tpzuk/openEO_read-write/main/data/outfile.nc\"\n#url = \"https://github.com/tjellicoe-tpzuk/openEO_read-write/blob/main/data/outfile.nc\"\n#read_netcdf_from_git(url)\n\n\ndef apply_datacube(cube: XarrayDataCube, context: dict):\n    url = context['url']\n    return read_netcdf_from_git(url)"
+      },
+      "process_id": "run_udf",
+      "result": true
+    }
+  }
+}
