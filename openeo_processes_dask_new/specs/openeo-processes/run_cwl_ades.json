@@ -68,12 +68,6 @@
       }
     },
     {
-      "name": "domain",
-      "default": {},
-      "description": "The domain address of a running EOEPCA instance to be used when deploying the application package via the ADES.",
-      "type": "string"
-    },
-    {
       "name": "context",
       "description": "A dictionary of additional inputs required within this process.",
       "schema": {
