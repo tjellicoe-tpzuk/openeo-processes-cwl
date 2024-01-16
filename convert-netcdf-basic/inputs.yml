@@ -1,0 +1,5 @@
+input_reference:
+  class: File
+  path: S2_L2A_Belgium.nc
+size: "0.02" # type 'string'
+fn: scale # type 'string'
