@@ -157,7 +157,7 @@
     "execute_cwl": {
       "process_id": "run_cwl_local",
       "arguments": {
-        "cwl_location": "data/convert-nc-app.cwl",
+        "cwl_location": "../convert-netcdf-basic/convert-nc-app.cwl",
         "data": {
           "from_node": "mintime"
         },
