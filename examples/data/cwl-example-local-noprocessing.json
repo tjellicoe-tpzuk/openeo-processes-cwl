@@ -1,0 +1,42 @@
+{
+  "process_graph": {
+    "load_collection": {
+      "process_id": "load_collection",
+      "description": "Loading the data",
+      "arguments": {
+        "id": "Sentinel-2",
+        "spatial_extent": {
+          "west": 16.1,
+          "east": 16.6,
+          "north": 48.6,
+          "south": 47.2
+        },
+        "temporal_extent": ["2018-01-01", "2018-02-01"],
+        "bands": ["B02", "B04", "B08"]
+      }
+    },
+    "execute_cwl": {
+      "process_id": "run_cwl_local",
+      "arguments": {
+        "cwl_location": "../convert-netcdf-basic/convert-nc-app.cwl",
+        "data": {
+          "from_node": "load_collection"
+        },
+        "cwl_inputs": {
+          "fn": "scale",
+          "size": "0.1"
+        }
+      }
+    },
+    "save": {
+      "process_id": "save_result",
+      "arguments": {
+        "data": {
+          "from_node": "execute_cwl"
+        },
+        "format": "_"
+      },
+      "result": true
+    }
+  }
+}
