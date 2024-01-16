@@ -1,0 +1,3 @@
+input_reference: https://raw.githubusercontent.com/tjellicoe-tpzuk/openEO_read-write/main/data/openEO_output_819382.nc # type 'string'
+size: "0.02" # type 'string'
+fn: scale # type 'string'
