@@ -48,13 +48,13 @@ def load_collection(id=None, spatial_extent=None, temporal_extent=None, bands = 
     return xr.load_dataset("./data/boa.nc")
 
 
-def save_result(data, format = 'netcdf', options = None):
+def save_result(data, file_name, format = 'netcdf', options = None):
     # No generic implementation available, so need to implement locally!
     import xarray as xr
 
     outfile = data.to_netcdf()
     
-    with open("output_file.nc", "wb") as file:
+    with open(file_name, "wb") as file:
         file.write(outfile)
     file.close()
 
@@ -78,7 +78,7 @@ cwl_inputs = {
 
 ## Execute CWL script on given data
 output_cube = run_cwl_local(data=input_cube, cwl_location=cwl_location, cwl_inputs=cwl_inputs)
-
+save_result(data=output_cube, file_name="local_output.nc")
 ## Construct graph with ADES CWL execution
 
 git_token = "INSERT TOKEN HERE",
@@ -98,5 +98,4 @@ cwl_inputs = {
 
 ## Execute CWL script on given data via the ADES
 output_cube = run_cwl_ades(cwl_url=cwl_url, data=cube_url, domain=domain, cwl_inputs=cwl_inputs)
-
-save_result(data=output_cube)
+save_result(data=output_cube, file_name="remote_output.nc")
