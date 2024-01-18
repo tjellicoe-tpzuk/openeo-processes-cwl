@@ -16,7 +16,7 @@
           "pattern": "^https?://"
         },
         {
-          "description": "Not yet supported. Path to a CWL file uploaded to the server.",
+          "description": "Path to a CWL file uploaded to the server.",
           "type": "string",
           "subtype": "file-path",
           "pattern": "^[^\r\n\\:'\"]+$"
