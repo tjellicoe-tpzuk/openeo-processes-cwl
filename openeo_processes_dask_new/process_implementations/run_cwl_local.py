@@ -8,6 +8,7 @@ import xarray as xr
 import cwltool.factory
 import cwltool.context
 import os
+import time
 
 #####
 # This script will run a CWL script locally and load in the output as a data array for further processing.
@@ -20,7 +21,15 @@ def save_file(data):
     outPath = os.getcwd()
 
     try:
-        data.attrs['reduced_dimensions_min_values'] = str(data.attrs['reduced_dimensions_min_values'])
+            data.attrs['reduced_dimensions_min_values'] = str(data.attrs['reduced_dimensions_min_values'])
+    except:
+        None
+    try:
+        data.attrs['spec'] = str(data.attrs['spec'])
+    except:
+        None
+    try:
+        data.attrs['processing:software'] = str(data.attrs['processing:software'])
     except:
         None
 
@@ -58,9 +67,12 @@ def run_cwl_local(cwl_location, data, cwl_inputs, context=None):
 
     outData = result['results']['location']
     outData = outData.replace("file://","")
+    outData = outData.replace("%20", " ")
+
+    print(outData)
 
     rem_file(dataLocation)
-
+        
     files = os.listdir(outData)
 
     for file in files:

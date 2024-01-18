@@ -1,0 +1,85 @@
+{
+  "id": "run_cwl_local_generic",
+  "summary": "Run a cwl script on the input data.",
+  "description": "Runs a given CWL script on the input data, as well as allowing \n\nadditional context data to be provided as required by the CWL definition. This process will run the #main workflow within the CWL tool.\n\n Desired output for next process must be called 'results'.",
+  "categories": ["cubes", "import", "cwl", "url"],
+  "parameters": [
+    {
+      "description": "Either source code, an absolute URL or a path pointing to a cwl script to be applied to the input data. \n\nThis CWL script needs to comply with the OGC Best Practice definition and needs to contain exactly one input with id 'input_data'.",
+      "name": "cwl_location",
+      "schema": [
+        {
+          "description": "Absolute URL to the CWL file.",
+          "type": "string",
+          "format": "uri",
+          "subtype": "uri",
+          "pattern": "^https?://"
+        },
+        {
+          "description": "Not yet supported. Path to a CWL file uploaded to the server.",
+          "type": "string",
+          "subtype": "file-path",
+          "pattern": "^[^\r\n\\:'\"]+$"
+        },
+        {
+          "description": "Not yet supported. The multi-line source code of a CWL file, must contain a newline/line-break.",
+          "type": "string",
+          "subtype": "cwl-code",
+          "pattern": "(\r\n|\r|\n)"
+        }
+      ]
+    },
+    {
+      "name": "cwl_inputs",
+      "default": {},
+      "description": "A dictionary of additional parameter inputs to be passed into the cwl file when run. \n\nThis can be provided either as a yml text string, as a URL or a path pointing to a yml file. Note, the inputs here must align with those names in the inputted CWL file.",
+      "optional": true,
+      "schema": [
+        {
+          "description": "A yml text string of inputs",
+          "type": "string",
+          "format": "yml-inputs",
+          "subtype": "yml-inputs",
+          "pattern": "(.+:.*(\r\n|\n|\r)*)+"
+        },
+        {
+          "description": "Not yet supported. Absolute URL to a yml input file.",
+          "type": "string",
+          "format": "uri",
+          "subtype": "uri",
+          "pattern": "^https?://"
+        },
+        {
+          "description": "Not yet supported. Path to a yml input file uploaded to the server.",
+          "type": "string",
+          "subtype": "file-path",
+          "pattern": "^[^\r\n\\:'\"]+$"
+        }
+      ]
+    },
+    {
+      "name": "context",
+      "description": "A dictionary of additional inputs required within this process.",
+      "schema": {
+        "type": "object"
+      },
+      "default": {},
+      "optional": true
+    }
+  ],
+  "exceptions": {
+    "InvalidXX": {
+      "message": "Insert example exception message here. E.g. 'The specified UDF runtime version is not supported'"
+    },
+    "InvalidYY": {
+      "message": "Insert example exception message here. E.g. 'The specified UDF runtime version is not supported'"
+    }
+  },
+  "returns": {
+    "description": "The data processed by the CWl tool. The returned value can be of any data type and is exactly what the CWL tool returns.",
+    "schema": {
+      "title": "Any",
+      "description": "Any data type."
+    }
+  }
+}
