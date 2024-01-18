@@ -68,8 +68,8 @@
     }
   ],
   "exceptions": {
-    "InvalidXX": {
-      "message": "Insert example exception message here. E.g. 'The specified UDF runtime version is not supported'"
+    "CWLStepNameException": {
+      "message": "A local CWL script is selected for execution, however a step name has also been provided which is not currently supported in the process. Instead the 'main' step is run as default. Please update local CWL script to include a workflow or step with id 'main'."
     },
     "InvalidYY": {
       "message": "Insert example exception message here. E.g. 'The specified UDF runtime version is not supported'"

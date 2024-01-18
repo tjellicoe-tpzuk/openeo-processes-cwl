@@ -21,7 +21,7 @@ def save_file(data):
     outPath = os.getcwd()
 
     try:
-            data.attrs['reduced_dimensions_min_values'] = str(data.attrs['reduced_dimensions_min_values'])
+        data.attrs['reduced_dimensions_min_values'] = str(data.attrs['reduced_dimensions_min_values'])
     except:
         None
     try:
@@ -69,7 +69,7 @@ def run_cwl_local(cwl_location, data, cwl_inputs, context=None):
     outData = outData.replace("file://","")
     outData = outData.replace("%20", " ")
 
-    print(outData)
+    #print(outData)
 
     rem_file(dataLocation)
         

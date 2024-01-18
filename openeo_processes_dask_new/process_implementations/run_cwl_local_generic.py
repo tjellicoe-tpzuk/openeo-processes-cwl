@@ -13,6 +13,11 @@ __all__ = ["run_cwl_local_generic"]
 
 def run_cwl_local_generic(cwl_location, cwl_inputs, context:dict=None):
 
+    if os.path.isfile(cwl_location) and context:
+        raise Exception("CWLStepNameException", f"For a local CWL script you cannot provide a step name, {context}, the 'main' workflow will be run by default. This functionality is to be fixed in future.")
+
+
+
     runtime = cwltool.context.RuntimeContext()
     loadContext = cwltool.context.LoadingContext()
     runtime.outdir = os.getcwd()

@@ -10,6 +10,7 @@ from .math import *
 from .cwl_preparation import *
 from .run_cwl_ades import *
 from .run_cwl_local import *
+from .run_cwl_local_generic import *
 
 try:
     from .ml import *
